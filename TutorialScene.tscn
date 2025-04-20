@@ -1,0 +1,81 @@
+[gd_scene load_steps=13 format=3 uid="uid://crbn8f4utpgl5"]
+
+[ext_resource type="Texture2D" uid="uid://bwxqwuyhkctag" path="res://icon.svg" id="1_qvpis"]
+[ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dcwvj"]
+[ext_resource type="Texture2D" uid="uid://ha1hi243wxqm" path="res://Assets/TestTextures/pbr_mat/pbr_mat/Rock030_1K-JPG/Rock030_1K-JPG_NormalGL.jpg" id="3_gaqjs"]
+[ext_resource type="PackedScene" uid="uid://7n16wqjie2wa" path="res://CaveGeneration/CaveGenerator/CaveGenerator.tscn" id="4_2nwka"]
+[ext_resource type="Script" uid="uid://dype0mkkdf0l8" path="res://addons/FreeLookCamera.gd" id="5_r6w8k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7llj"]
+albedo_texture = ExtResource("1_qvpis")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74u7v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8re3b"]
+render_priority = 0
+shader = ExtResource("2_dcwvj")
+shader_parameter/outline_color = Color(0.393086, 0.393086, 0.393085, 1)
+shader_parameter/outline_width = 5.0
+shader_parameter/fade_start = 10.0
+shader_parameter/fade_end = 30.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cjeqb"]
+next_pass = SubResource("ShaderMaterial_8re3b")
+albedo_texture = ExtResource("1_qvpis")
+normal_texture = ExtResource("3_gaqjs")
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0
+
+[sub_resource type="VoxelGeneratorFlat" id="VoxelGeneratorFlat_i7llj"]
+height = 100.0
+
+[sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_74u7v"]
+
+[sub_resource type="Environment" id="Environment_i7llj"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.529067, 0.529066, 0.529067, 1)
+reflected_light_source = 1
+tonemap_mode = 3
+glow_enabled = true
+glow_strength = 1.25
+glow_blend_mode = 1
+glow_hdr_threshold = 0.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+
+[node name="TutorialScene" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+visible = false
+material_override = SubResource("StandardMaterial3D_i7llj")
+size = Vector3(20, 1, 20)
+material = SubResource("StandardMaterial3D_74u7v")
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="." groups=["navmesh_source"]]
+material_override = SubResource("StandardMaterial3D_cjeqb")
+generator = SubResource("VoxelGeneratorFlat_i7llj")
+mesher = SubResource("VoxelMesherTransvoxel_74u7v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 3, 3)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i7llj")
+
+[node name="CaveGenerator" parent="." node_paths=PackedStringArray("voxel_terrain", "generation_start_marker") instance=ExtResource("4_2nwka")]
+voxel_terrain = NodePath("../VoxelTerrain")
+generation_start_marker = NodePath("StartMarker")
+random_walk_length = 2000
+
+[node name="StartMarker" type="Marker3D" parent="CaveGenerator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+script = ExtResource("5_r6w8k")
+
+[node name="VoxelViewer" type="VoxelViewer" parent="Camera3D"]
