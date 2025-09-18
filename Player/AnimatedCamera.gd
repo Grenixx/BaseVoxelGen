@@ -18,8 +18,6 @@ var mouseDelta = Vector2()
 @onready
 var playerRef : CharacterBody3D = get_parent()
 
-@onready
-var camera_animations : AnimationPlayer = $CameraAnimations
 
 
 func _ready():

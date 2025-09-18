@@ -22,3 +22,5 @@ script = ExtResource("2_kpjcp")
 
 [node name="DigMarker" type="Marker3D" parent="Camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0125676, -2)
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]
