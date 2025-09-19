@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://crbn8f4utpgl5"]
+[gd_scene load_steps=12 format=3 uid="uid://crbn8f4utpgl5"]
 
-[ext_resource type="Texture2D" uid="uid://bwxqwuyhkctag" path="res://icon.svg" id="1_qvpis"]
+[ext_resource type="Texture2D" uid="uid://cmssrtn0xga4j" path="res://prototype.png" id="1_qvpis"]
 [ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dcwvj"]
 [ext_resource type="Texture2D" uid="uid://ha1hi243wxqm" path="res://Assets/TestTextures/pbr_mat/pbr_mat/Rock030_1K-JPG/Rock030_1K-JPG_NormalGL.jpg" id="3_gaqjs"]
 [ext_resource type="PackedScene" uid="uid://7n16wqjie2wa" path="res://CaveGeneration/CaveGenerator/CaveGenerator.tscn" id="4_2nwka"]
@@ -16,12 +16,14 @@ shader_parameter/fade_end = 30.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cjeqb"]
 next_pass = SubResource("ShaderMaterial_8re3b")
+albedo_color = Color(0.41981313, 0.41981313, 0.4198131, 1)
 albedo_texture = ExtResource("1_qvpis")
 normal_texture = ExtResource("3_gaqjs")
 uv1_triplanar = true
 uv1_triplanar_sharpness = 150.0
 
 [sub_resource type="VoxelStreamMemory" id="VoxelStreamMemory_qvpis"]
+resource_local_to_scene = true
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_dcwvj"]
 
@@ -29,24 +31,12 @@ uv1_triplanar_sharpness = 150.0
 noise = SubResource("FastNoiseLite_dcwvj")
 
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_74u7v"]
-
-[sub_resource type="Environment" id="Environment_i7llj"]
-background_mode = 1
-ambient_light_source = 2
-ambient_light_color = Color(0.529067, 0.529066, 0.529067, 1)
-reflected_light_source = 1
-tonemap_mode = 3
-glow_enabled = true
-glow_strength = 1.25
-glow_blend_mode = 1
-glow_hdr_threshold = 0.0
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.1
-volumetric_fog_albedo = Color(0, 0, 0, 1)
+mesh_optimization_enabled = true
 
 [node name="TutorialScene" type="Node3D"]
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="." groups=["navmesh_source"]]
+max_view_distance = 50
 material_override = SubResource("StandardMaterial3D_cjeqb")
 stream = SubResource("VoxelStreamMemory_qvpis")
 generator = SubResource("VoxelGeneratorNoise_gaqjs")
@@ -57,7 +47,6 @@ transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_i7llj")
 
 [node name="CaveGenerator" parent="." node_paths=PackedStringArray("voxel_terrain", "generation_start_marker") instance=ExtResource("4_2nwka")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2784312, 0)

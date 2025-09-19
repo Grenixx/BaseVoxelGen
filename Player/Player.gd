@@ -36,12 +36,12 @@ func _physics_process(delta: float) -> void:
 		
 		voxel_tool.mode = VoxelTool.MODE_REMOVE
 		
-		voxel_tool.do_sphere($Camera/DigMarker.global_position, 2.0)
+		voxel_tool.do_sphere($Camera/DigMarker.global_position, 1.5)
 	
 	if Input.is_action_just_pressed("make"):
 		
 		voxel_tool.mode = VoxelTool.MODE_ADD
 		
-		voxel_tool.do_sphere($Camera/DigMarker.global_position, 2.0)
+		voxel_tool.do_sphere($Camera/DigMarker.global_position,1.5)
 		
 	
