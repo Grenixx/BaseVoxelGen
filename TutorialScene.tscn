@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://crbn8f4utpgl5"]
+[gd_scene load_steps=13 format=3 uid="uid://crbn8f4utpgl5"]
 
 [ext_resource type="Texture2D" uid="uid://bwxqwuyhkctag" path="res://icon.svg" id="1_qvpis"]
 [ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dcwvj"]
@@ -21,8 +21,12 @@ normal_texture = ExtResource("3_gaqjs")
 uv1_triplanar = true
 uv1_triplanar_sharpness = 150.0
 
-[sub_resource type="VoxelGeneratorFlat" id="VoxelGeneratorFlat_i7llj"]
-height = 100.0
+[sub_resource type="VoxelStreamMemory" id="VoxelStreamMemory_qvpis"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dcwvj"]
+
+[sub_resource type="VoxelGeneratorNoise" id="VoxelGeneratorNoise_gaqjs"]
+noise = SubResource("FastNoiseLite_dcwvj")
 
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_74u7v"]
 
@@ -44,7 +48,8 @@ volumetric_fog_albedo = Color(0, 0, 0, 1)
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="." groups=["navmesh_source"]]
 material_override = SubResource("StandardMaterial3D_cjeqb")
-generator = SubResource("VoxelGeneratorFlat_i7llj")
+stream = SubResource("VoxelStreamMemory_qvpis")
+generator = SubResource("VoxelGeneratorNoise_gaqjs")
 mesher = SubResource("VoxelMesherTransvoxel_74u7v")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
