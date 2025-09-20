@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://crbn8f4utpgl5"]
+[gd_scene load_steps=13 format=3 uid="uid://crbn8f4utpgl5"]
 
 [ext_resource type="Texture2D" uid="uid://cmssrtn0xga4j" path="res://prototype.png" id="1_qvpis"]
 [ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dcwvj"]
@@ -33,7 +33,11 @@ noise = SubResource("FastNoiseLite_dcwvj")
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_74u7v"]
 mesh_optimization_enabled = true
 
-[node name="TutorialScene" type="Node3D"]
+[sub_resource type="Environment" id="Environment_qvpis"]
+background_mode = 2
+ambient_light_color = Color(0.14044744, 0.14044744, 0.14044744, 1)
+
+[node name="world" type="Node3D"]
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="." groups=["navmesh_source"]]
 max_view_distance = 50
@@ -47,6 +51,7 @@ transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qvpis")
 
 [node name="CaveGenerator" parent="." node_paths=PackedStringArray("voxel_terrain", "generation_start_marker") instance=ExtResource("4_2nwka")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2784312, 0)
