@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://crbn8f4utpgl5"]
+[gd_scene load_steps=14 format=3 uid="uid://crbn8f4utpgl5"]
 
-[ext_resource type="Texture2D" uid="uid://cmssrtn0xga4j" path="res://prototype.png" id="1_qvpis"]
-[ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dcwvj"]
-[ext_resource type="Texture2D" uid="uid://ha1hi243wxqm" path="res://Assets/TestTextures/pbr_mat/pbr_mat/Rock030_1K-JPG/Rock030_1K-JPG_NormalGL.jpg" id="3_gaqjs"]
-[ext_resource type="PackedScene" uid="uid://7n16wqjie2wa" path="res://CaveGeneration/CaveGenerator/CaveGenerator.tscn" id="4_2nwka"]
-[ext_resource type="PackedScene" uid="uid://b57e2yn2oqx23" path="res://Player/Player.tscn" id="6_dcwvj"]
+[ext_resource type="Texture2D" uid="uid://cmssrtn0xga4j" path="res://prototype.png" id="1_036b0"]
+[ext_resource type="Shader" uid="uid://7l7fk2kf5cab" path="res://Shaders/OutlineShader.gdshader" id="2_dwbse"]
+[ext_resource type="Texture2D" uid="uid://ha1hi243wxqm" path="res://Assets/TestTextures/pbr_mat/pbr_mat/Rock030_1K-JPG/Rock030_1K-JPG_NormalGL.jpg" id="3_pkg7o"]
+[ext_resource type="PackedScene" uid="uid://7n16wqjie2wa" path="res://CaveGeneration/CaveGenerator/CaveGenerator.tscn" id="4_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://b57e2yn2oqx23" path="res://Player/Player.tscn" id="5_ioo17"]
+[ext_resource type="PackedScene" uid="uid://vduxhv0dhot3" path="res://crawler.tscn" id="6_dwbse"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8re3b"]
 render_priority = 0
-shader = ExtResource("2_dcwvj")
+shader = ExtResource("2_dwbse")
 shader_parameter/outline_color = Color(0.393086, 0.393086, 0.393085, 1)
 shader_parameter/outline_width = 5.0
 shader_parameter/fade_start = 10.0
@@ -17,8 +18,8 @@ shader_parameter/fade_end = 30.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cjeqb"]
 next_pass = SubResource("ShaderMaterial_8re3b")
 albedo_color = Color(0.41981313, 0.41981313, 0.4198131, 1)
-albedo_texture = ExtResource("1_qvpis")
-normal_texture = ExtResource("3_gaqjs")
+albedo_texture = ExtResource("1_036b0")
+normal_texture = ExtResource("3_pkg7o")
 uv1_triplanar = true
 uv1_triplanar_sharpness = 150.0
 
@@ -53,7 +54,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_qvpis")
 
-[node name="CaveGenerator" parent="." node_paths=PackedStringArray("voxel_terrain", "generation_start_marker") instance=ExtResource("4_2nwka")]
+[node name="CaveGenerator" parent="." node_paths=PackedStringArray("voxel_terrain", "generation_start_marker") instance=ExtResource("4_gbfbk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2784312, 0)
 voxel_terrain = NodePath("../VoxelTerrain")
 generation_start_marker = NodePath("StartMarker")
@@ -62,5 +63,9 @@ random_walk_length = 2000
 [node name="StartMarker" type="Marker3D" parent="CaveGenerator"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
 
-[node name="Player" parent="." node_paths=PackedStringArray("voxel_terrain") instance=ExtResource("6_dcwvj")]
+[node name="Player" parent="." node_paths=PackedStringArray("voxel_terrain") instance=ExtResource("5_ioo17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 26, 0)
 voxel_terrain = NodePath("../VoxelTerrain")
+
+[node name="crawler" parent="." instance=ExtResource("6_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 10, 24)
